@@ -7,33 +7,30 @@ const btnBig = document.getElementById("bigAdd");
 let prixSmall = document.getElementById("prixsmall");
 let prixMedium = document.getElementById("prixmedium");
 let prixBig = document.getElementById("prixbig");
+let displayInc = document.getElementById("inc");
 
-document.getElementById("smallAdd").disabled = true; //desactive items trop chers
+btnSmall.disabled = true; //desactive items trop chers
 document.getElementById("mediumAdd").disabled = true;
 document.getElementById("bigAdd").disabled = true;
-document.getElementById("display-score").innerHTML = 0;
-score.innerHTML = 0;
+
 let valueClick = 1;
 let scoreClick = 0;
-let mediumActive=false; //variable pour voir si setInterval medium fonctionne
-let bigActive=false; //variable pour voir si setInterval medium fonctionne
-
-//----------fonctions pour augmenter la valeur du click------
-
-function newClick() {
-    scoreClick += valueClick;
-    document.getElementById("display-score").innerHTML = scoreClick;
-    check();
-}
+let disabled_btn_small = 5;
+score.innerHTML = scoreClick;
+const audioclick = document.getElementById("audio-click");
+const audioUp = document.getElementById("audio-up");
+let inc_per_second=0;
+displayInc.innerHTML=inc_per_second;
 
 //----------fonction régulièrement appeler pour vérifier si on bloque bouton ou pas------
 
+//fonction pour activer boutons bonus
 function check() {
     addLocalStorage();
     if (scoreClick >= disabled_btn_small) {
-        document.getElementById("smallAdd").disabled = false;
+        btnSmall.disabled = false;
     } else if (scoreClick <= disabled_btn_small) {
-        document.getElementById("smallAdd").disabled = true;
+        btnSmall.disabled = true;
     }
 
     if (scoreClick >= disabled_btn_medium) {
@@ -49,75 +46,65 @@ function check() {
     }
 }
 
+//----------fonctions pour augmenter la valeur du click------
+
+//fonction pour ajouter valeur d'un click à score
+function newClick() {
+    //check();
+    scoreClick += valueClick;
+    document.getElementById("display-score").innerHTML = scoreClick;
+    console.log(scoreClick);
+    audioclick.play();
+    check();
+}
+
 //---------------variable et fonction pour le bouton le moins chers-------------
 
-let disabled_btn_small = 10;
 prixSmall.innerHTML = disabled_btn_small;
 
+//fonction pour augmenter la valeure du click
 function small() {
     valueClick = valueClick + 1;//la valeure du click augmente
     scoreClick = scoreClick - disabled_btn_small;//on soustrait prix du click
     document.getElementById("display-score").innerHTML = scoreClick;
     disabled_btn_small = disabled_btn_small * 2; //prix du bouton qu augmente
     prixSmall.innerHTML = disabled_btn_small;
+    audioUp.play();
     check(); // on check pour désactiver boutons trop chers
 }
 
 //---------------variable et fonction pour le bouton moyen chers-------------
 
-let valueMedium = 1;
-let disabled_btn_medium = 100;
+let valueMedium = 2;
+let disabled_btn_medium = 50;
 prixMedium.innerHTML = disabled_btn_medium;
 
-function mediumInc() {
-    scoreClick = scoreClick + valueMedium;
-    document.getElementById("display-score").innerHTML = scoreClick;
-    check();
-}
-
 function medium() {
-    intervalMedium = setInterval(mediumInc, 1000);
+    inc_per_second = inc_per_second + valueMedium;
     scoreClick = scoreClick - disabled_btn_medium;//on soustrait prix du click
+    check();
     disabled_btn_medium = disabled_btn_medium * 3;
     prixMedium.innerHTML = disabled_btn_medium;
-    valueMedium = valueMedium * 2;//augmente l'incrémentation chaque fois qu'on clique
-    mediumActive=true;
-}
-
-function medium_refresh(){
-    intervalMedium = setInterval(mediumInc, 1000);
-    prixMedium.innerHTML = disabled_btn_medium;
-    mediumActive=true;
+    audioUp.play();
 }
 
 //---------------variable et fonction pour bouton le plus chers-------------
 
-let valueBig = 10;//valeur qui va être multipliée quand on clique sur big()
-let disabled_btn_big = 1000;
+let disabled_btn_big = 500;
 prixBig.innerHTML = disabled_btn_big;
 
-function bigInc() {
-    scoreClick = scoreClick + valueBig;
-    document.getElementById("display-score").innerHTML = scoreClick;
-    check();
-}
-
 function big() {
-    intervalBig = setInterval(bigInc, 1000);
+    inc_per_second = inc_per_second * 2;
     scoreClick = scoreClick - disabled_btn_big;//on soustrait prix du click
+    check();
     disabled_btn_big = disabled_btn_big * 5;
     prixBig.innerHTML = disabled_btn_big;
-    valueBig = Math.round(valueBig * 3);
-    bigActive=true;
-}
-function big_refresh() {
-    intervalBig = setInterval(bigInc, 1000);
-    prixBig.innerHTML = disabled_btn_big;
-    bigActive=true;
+    audioUp.play();
 }
 
 //---------------fonction pour rentrer valeurs en local.storage-------------
 
+//fonction ajoute variables dans local storage
 function addLocalStorage() {
         var strScore = scoreClick.toString();//données sur le score
         console.log("score "+strScore);
@@ -127,12 +114,11 @@ function addLocalStorage() {
         localStorage.setItem('disabled_btn_medium', disabled_btn_medium);
         localStorage.setItem('disabled_btn_big', disabled_btn_big);
         localStorage.setItem('valueMedium', valueMedium);
-        localStorage.setItem('valueBig', valueBig);
-        localStorage.setItem('bigActive', bigActive);
-        localStorage.setItem('mediumActive', mediumActive);
+        localStorage.setItem('inc_per_second', inc_per_second);
         console.log(localStorage);
 }
 
+//fonction pour récupérer variable du local storage
 function getLocalStorage(){
     if (localStorage.getItem('score') != null) {
         console.log("get score "+localStorage.getItem('score'));
@@ -162,46 +148,43 @@ function getLocalStorage(){
         valueMedium=localStorage.getItem('valueMedium');
         valueMedium = parseInt(valueMedium);
     }
-    if(localStorage.getItem('valueBig') != null) {
-        valueBig=localStorage.getItem('valueBig');
-        valueBig = parseInt(valueBig);
-    }
-    if(localStorage.getItem('mediumActive') != null) {
-        mediumActive=localStorage.getItem('mediumActive');
-        if(mediumActive==="true"){
-            medium_refresh();
-        }
-    }
 
-    if(localStorage.getItem('bigActive') != null) {
-        bigActive=localStorage.getItem('bigActive');
-        if(bigActive==="true"){
-            big_refresh();
-        }
+    if(localStorage.getItem('inc_per_second') != null) {
+        inc_per_second=localStorage.getItem('inc_per_second');
+        inc_per_second = parseInt(inc_per_second);
     }
 }
 
+//fonction pour quand on rafraichit la page
 window.onload = (event) => {
     getLocalStorage()
     document.getElementById("display-score").innerHTML = scoreClick
     check();
 };
 
+function perSecond(){
+    scoreClick = scoreClick + inc_per_second;
+    score.innerHTML = scoreClick;
+    displayInc.innerHTML=inc_per_second;
+    check();
+}
+
+const intervalId=setInterval(perSecond, 1000);
+
+//fonction pour reset les valeurs
 function reset() {
     localStorage.clear();
     valueClick = 1;
     scoreClick = 0;
-    mediumActive=false; 
-    bigActive=false; 
-    disabled_btn_small = 10;
+    disabled_btn_small = 5;
     prixSmall.innerHTML = disabled_btn_small;
     valueMedium = 2;
-    disabled_btn_medium = 100;
+    disabled_btn_medium = 50;
     prixMedium.innerHTML = disabled_btn_medium;
-    valueBig = 10;
-    disabled_btn_big = 1000;
+    disabled_btn_big = 500;
     prixBig.innerHTML = disabled_btn_big;
     score.innerHTML = 0;
-    clearInterval(intervalMedium);
-    clearInterval(intervalBig);
-} 
+    inc_per_second = 0;
+    check();
+}
+  

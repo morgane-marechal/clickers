@@ -45,6 +45,13 @@ html{
     font-weight: 900;
     font-family: 'Mukta', sans-serif;
 }
+#displayInc{
+    font-size: 2em;
+    color: #abe4b2;
+    text-shadow: 1px 1px white, -1px -1px #444;
+    font-weight: 500;
+    font-family: 'Mukta', sans-serif;
+}
 
 #click-me:active{
     background: linear-gradient(#ef6161, #fabe9c); 
@@ -99,3 +106,6 @@ html{
     text-align: center;
 }
 
+.audio{
+    opacity: 0;
+}
