@@ -9,6 +9,8 @@ html{
 #bonus{
     display:flex;
     flex-direction:row;
+    justify-content: center;
+    width:60%;
 }
 
 #center{
@@ -19,28 +21,81 @@ html{
 
 #click-me{
     border:none;
-    width:35%;
-    height:35vh;
+    width:180px;
+    height:180px;
     border-radius: 50%;
-    margin:2%;
+    margin:1%;
     font-size: 2em;
-    color:rgb(82, 40, 62);
+    color:#e66465;
     text-transform: uppercase;
-    background: linear-gradient(#e66465, #9198e5); 
+    text-shadow: 1px 1px white, -1px -1px #444;
+    /* background: linear-gradient(#e66465, #f1af89);  */
+    background-color: #e5b091;
     cursor: pointer;
     font-family: 'Mukta', sans-serif;
+}
+#click-me:hover{
+    background-color: #f6d7c5;
+}
 
+#display-score{
+    font-size: 4em;
+    color: #abe4b2;
+    text-shadow: 1px 1px white, -1px -1px #444;
+    font-weight: 900;
+    font-family: 'Mukta', sans-serif;
 }
 
 #click-me:active{
-    background: linear-gradient(#ff5792, #6bc2ed); 
+    background: linear-gradient(#ef6161, #fabe9c); 
+}
 
+#smallAdd, #mediumAdd, #bigAdd{
+    height:50%; 
+    border:none;
+    border-radius: 10px;
+    text-transform: uppercase;
+    /* box-shadow: 1px 1px 2px rgb(247, 144, 144); */
+    width:100%;
+    color: rgb(51, 46, 61);
+    font-weight: 800;
+}
+
+#smallAdd:hover, #mediumAdd:hover, #bigAdd:hover{
+  background-color: #fad3bc;
+}
+
+#smallAdd:active, #mediumAdd:active, #bigAdd:active{
+    box-shadow: 1px 1px white, -1px -1px #444;
+  }
+
+#btnreset{
+    margin:2%;
+    width:100px;
+    height:100px;
+    border:none;
+    border-radius: 50%;
+    text-transform: uppercase;
+    /* box-shadow: 1px 1px 2px rgb(247, 144, 144); */
+    color: rgb(51, 46, 61);
+    font-weight: 800;
+    background-color: #abe4b2;
+}
+#btnreset:hover{
+    background-color: white;
 }
 .card{
     width:30%;
     margin:2%;
-    background: linear-gradient( #9198e5, #5fec72); 
-
-    padding:5%;
+    border-radius: 22px;
+    /* box-shadow: 1px 1px white, -1px -1px #444; */
+    background: linear-gradient(145deg, #fa9e9e, #e67878);
+    padding:3%;
     border-radius: 10px;
 }
+
+.prix{
+    font-size: 1.2em;
+    text-align: center;
+}
+
