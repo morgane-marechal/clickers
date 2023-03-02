@@ -2,7 +2,7 @@
 html{
     padding:0;
     margin:0;
-    background: linear-gradient(#e5b091,#e66465, #abe4b2);
+    background: linear-gradient(#e5b091,#e66465,  #abe4b2);
     font-family: 'Poppins', sans-serif; 
 }
 
@@ -17,6 +17,33 @@ html{
     display:flex;
     flex-direction: column;
     align-items: center;
+}
+
+#elements{
+    display:flex;
+    flex-direction: row;
+}
+#heart{
+    margin:1%2%1%2%;
+    width:12%;
+    position:absolute;
+}
+
+#lollypop{
+    margin:3%2%1%80%;
+    width:7%;
+    position:absolute;
+    z-index:0;
+}
+
+#lollypop:hover{
+    filter: brightness(130%);
+}
+
+#audio-player-container{
+    position:absolute;
+    margin:6%40%1%60%;
+    cursor: pointer;
 }
 
 #click-me{
@@ -45,7 +72,7 @@ html{
     font-weight: 900;
     font-family: 'Mukta', sans-serif;
 }
-#displayInc{
+#displayInc, #displayValueClick{
     font-size: 2em;
     color: #abe4b2;
     text-shadow: 1px 1px white, -1px -1px #444;
@@ -109,3 +136,4 @@ html{
 .audio{
     opacity: 0;
 }
+

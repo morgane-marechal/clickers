@@ -8,6 +8,8 @@ let prixSmall = document.getElementById("prixsmall");
 let prixMedium = document.getElementById("prixmedium");
 let prixBig = document.getElementById("prixbig");
 let displayInc = document.getElementById("inc");
+let displayClick = document.getElementById("valueClick");
+let musicRunning = false;
 
 btnSmall.disabled = true; //desactive items trop chers
 document.getElementById("mediumAdd").disabled = true;
@@ -19,12 +21,17 @@ let disabled_btn_small = 5;
 score.innerHTML = scoreClick;
 const audioclick = document.getElementById("audio-click");
 const audioUp = document.getElementById("audio-up");
-let inc_per_second=0;
-displayInc.innerHTML=inc_per_second;
+const audioCartoon = document.getElementById("audio-cartoon");
+
+let inc_per_second = 0;
+displayInc.innerHTML = inc_per_second;
+displayClick.innerHTML = valueClick;
 
 //----------fonction régulièrement appeler pour vérifier si on bloque bouton ou pas------
 
 //fonction pour activer boutons bonus
+
+
 function check() {
     addLocalStorage();
     if (scoreClick >= disabled_btn_small) {
@@ -52,9 +59,11 @@ function check() {
 function newClick() {
     //check();
     scoreClick += valueClick;
+    audioclick.play();
     document.getElementById("display-score").innerHTML = scoreClick;
     console.log(scoreClick);
-    audioclick.play();
+    displayClick.innerHTML = valueClick;
+
     check();
 }
 
@@ -65,6 +74,7 @@ prixSmall.innerHTML = disabled_btn_small;
 //fonction pour augmenter la valeure du click
 function small() {
     valueClick = valueClick + 1;//la valeure du click augmente
+    displayClick.innerHTML = valueClick;
     scoreClick = scoreClick - disabled_btn_small;//on soustrait prix du click
     document.getElementById("display-score").innerHTML = scoreClick;
     disabled_btn_small = disabled_btn_small * 2; //prix du bouton qu augmente
@@ -106,51 +116,51 @@ function big() {
 
 //fonction ajoute variables dans local storage
 function addLocalStorage() {
-        var strScore = scoreClick.toString();//données sur le score
-        console.log("score "+strScore);
-        localStorage.setItem('score', strScore);       
-        localStorage.setItem('valueClick', valueClick);
-        localStorage.setItem('disabled_btn_small', disabled_btn_small);
-        localStorage.setItem('disabled_btn_medium', disabled_btn_medium);
-        localStorage.setItem('disabled_btn_big', disabled_btn_big);
-        localStorage.setItem('valueMedium', valueMedium);
-        localStorage.setItem('inc_per_second', inc_per_second);
-        console.log(localStorage);
+    var strScore = scoreClick.toString();//données sur le score
+    //console.log("score " + strScore);
+    localStorage.setItem('score', strScore);
+    localStorage.setItem('valueClick', valueClick);
+    localStorage.setItem('disabled_btn_small', disabled_btn_small);
+    localStorage.setItem('disabled_btn_medium', disabled_btn_medium);
+    localStorage.setItem('disabled_btn_big', disabled_btn_big);
+    localStorage.setItem('valueMedium', valueMedium);
+    localStorage.setItem('inc_per_second', inc_per_second);
+    //console.log(localStorage);
 }
 
 //fonction pour récupérer variable du local storage
-function getLocalStorage(){
+function getLocalStorage() {
     if (localStorage.getItem('score') != null) {
-        console.log("get score "+localStorage.getItem('score'));
-        scoreClick=localStorage.getItem('score');
+        console.log("get score " + localStorage.getItem('score'));
+        scoreClick = localStorage.getItem('score');
         scoreClick = parseInt(scoreClick);
-    } 
+    }
     if (localStorage.getItem('valueClick') != null) {
-        valueClick=localStorage.getItem('valueClick');
+        valueClick = localStorage.getItem('valueClick');
         valueClick = parseInt(valueClick);
-    } 
-    if(localStorage.getItem('disabled_btn_small') != null) {
-        disabled_btn_small=localStorage.getItem('disabled_btn_small');
+    }
+    if (localStorage.getItem('disabled_btn_small') != null) {
+        disabled_btn_small = localStorage.getItem('disabled_btn_small');
         disabled_btn_small = parseInt(disabled_btn_small);
         prixSmall.innerHTML = disabled_btn_small;
     }
-    if(localStorage.getItem('disabled_btn_medium') != null) {
-        disabled_btn_medium=localStorage.getItem('disabled_btn_medium');
+    if (localStorage.getItem('disabled_btn_medium') != null) {
+        disabled_btn_medium = localStorage.getItem('disabled_btn_medium');
         disabled_btn_medium = parseInt(disabled_btn_medium);
         prixMedium.innerHTML = disabled_btn_medium;
     }
-    if(localStorage.getItem('disabled_btn_big') != null) {
-        disabled_btn_big=localStorage.getItem('disabled_btn_big');
+    if (localStorage.getItem('disabled_btn_big') != null) {
+        disabled_btn_big = localStorage.getItem('disabled_btn_big');
         disabled_btn_big = parseInt(disabled_btn_big);
         prixBig.innerHTML = disabled_btn_big;
     }
-    if(localStorage.getItem('valueMedium') != null) {
-        valueMedium=localStorage.getItem('valueMedium');
+    if (localStorage.getItem('valueMedium') != null) {
+        valueMedium = localStorage.getItem('valueMedium');
         valueMedium = parseInt(valueMedium);
     }
 
-    if(localStorage.getItem('inc_per_second') != null) {
-        inc_per_second=localStorage.getItem('inc_per_second');
+    if (localStorage.getItem('inc_per_second') != null) {
+        inc_per_second = localStorage.getItem('inc_per_second');
         inc_per_second = parseInt(inc_per_second);
     }
 }
@@ -159,17 +169,19 @@ function getLocalStorage(){
 window.onload = (event) => {
     getLocalStorage()
     document.getElementById("display-score").innerHTML = scoreClick
+    displayInc.innerHTML = inc_per_second;
+    displayClick.innerHTML = valueClick;
     check();
 };
 
-function perSecond(){
-    scoreClick = scoreClick + inc_per_second;
+function perSecond() {
+    scoreClick = scoreClick + Math.round(inc_per_second / 4);
     score.innerHTML = scoreClick;
-    displayInc.innerHTML=inc_per_second;
+    displayInc.innerHTML = inc_per_second;
     check();
 }
 
-const intervalId=setInterval(perSecond, 1000);
+const intervalId = setInterval(perSecond, 250);
 
 //fonction pour reset les valeurs
 function reset() {
@@ -184,7 +196,155 @@ function reset() {
     disabled_btn_big = 500;
     prixBig.innerHTML = disabled_btn_big;
     score.innerHTML = 0;
+    displayClick.innerHTML = valueClick;
     inc_per_second = 0;
+    musicRunning = false
     check();
 }
-  
+
+/*
+              /\         /\
+             /  \       /  \ 
+
+               ___      ___
+
+
+                 |_____| 
+                   |_|
+
+*/ 
+
+// __________________________________________________________________________
+
+//---------------------------test animation JS --------------------
+
+const lollypop = document.getElementById("lollypop");
+const heart = document.getElementById("heart");
+const btnBonbon = document.getElementById("btn-img");
+
+
+const lollyTumbling = [
+    { transform: 'rotate(0) translate3D(0, 0, 0', color: '#000' },
+    { color: '#431236', offset: 0.3 },
+    { transform: 'rotate(360deg) translate3D(0, 0, 0)', color: '#000' }
+];
+
+
+//------animation pour faire apparaitre et disparaitre bonbons------
+
+const disappearCandy = [
+    { transform: "rotate(0) scale(1)" },
+    { transform: "rotate(360deg) scale(0)" },
+];
+
+const reappearCandy = [
+    { transform: "rotate(0) scale(0)" },
+    { transform: "rotate(360deg) scale(1)" },
+];
+
+const lollyTiming = {
+    duration: 6000,
+    iterations: Infinity
+}
+
+const desappearTiming = {
+    duration: 500,
+    iterations: 1
+}
+
+const reappearTiming = {
+    delay: 10500,
+    duration: 500,
+    iterations: 1
+}
+
+const noneTime = {
+    delay: 500,
+    duration: 1000,
+    iterations: 10
+}
+
+const noWhere = [
+    { transform: "scale(0)" },
+    { transform: "scale(0)" },
+];
+
+// ------------- click pour faire disparaitre lollypop -----------    
+lollypop.addEventListener("click", () => {
+    audioCartoon.play();
+    lollypop.animate(disappearCandy, desappearTiming);
+    lollypop.animate(noWhere, noneTime);
+    lollypop.animate(reappearCandy, reappearTiming);
+    inc_per_second = inc_per_second + 3;
+
+});
+
+// ------------- animation lollypop -----------    
+lollypop.animate(
+    lollyTumbling,
+    lollyTiming
+)
+
+//------animation pour bonbon du haut gauche------
+
+const popCandy = [
+    { transform: "scale(1)" },
+    { transform: "scale(1.1)" },
+    { transform: "scale(1)" },
+];
+
+const popCandyTime = {
+    duration: 2000,
+    iterations: Infinity
+}
+
+heart.animate(
+    popCandy,
+    popCandyTime
+)
+
+//----------control music------
+
+const audioMusic = document.getElementById("audio-music");
+const blocMusic = document.getElementById("audio-player-container");
+
+blocMusic.addEventListener("click", () => {
+     if (musicRunning===false){
+         PlayMusic();
+         musicRunning = true;
+     }else if (musicRunning===true){
+         audioMusic.pause();
+         musicRunning=false;
+     }
+});
+
+const intervalMusic=setInterval(PlayMusic, 1000);
+
+function PlayMusic(){
+    if (musicRunning===true){
+            if (inc_per_second<=3){
+            audioMusic.playbackRate=0.7;
+            audioMusic.play();
+        }else if(inc_per_second<=6){
+            audioMusic.playbackRate=0.8;
+            audioMusic.play();
+        }else if(inc_per_second<=10){
+            audioMusic.playbackRate=0.9;
+            audioMusic.play();
+        }else if(inc_per_second<=15){
+            audioMusic.playbackRate=1;
+            audioMusic.play();
+        }else if(inc_per_second<=20){
+            audioMusic.playbackRate=1.1;
+            audioMusic.play();        
+        }else if(inc_per_second<=25){
+            audioMusic.playbackRate=1.2;
+            audioMusic.play();        
+        }
+    }else if(musicRunning===false){
+        audioMusic.pause();
+    }
+}
+    
+    
+
